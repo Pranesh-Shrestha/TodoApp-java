@@ -14,7 +14,7 @@ jobs:
     name: Run build
     steps:
       - name: Setup PSE
-        uses: invisirisk/pse-action@dev-tes
+        uses: invisirisk/pse-action@dev-test
         with:
           api_url: "https://app.stage.invisirisk.com"
           app_token: ${{ secrets.IR_API_KEY_L_STAGE }}
