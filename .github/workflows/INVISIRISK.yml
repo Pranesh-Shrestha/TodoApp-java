@@ -1,0 +1,52 @@
+name: Java Project
+
+on:
+  workflow_dispatch:
+
+permissions:
+  checks: write
+  contents: write
+  packages: read
+
+jobs:
+  java-application-build:
+    runs-on: ubuntu-latest
+    name: Run build
+    steps:
+      - name: Setup PSE
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: "https://app.invisirisk.com"
+          app_token: ${{ secrets.IR_API_KEY_L_PROD }}
+
+      - uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'  # or '21' depending on your project
+
+      - name: Download direct dependencies only
+        run: |
+          mvn dependency:go-offline \
+          -DexcludeTransitive=true
+
+      - name: Cleanup PSE
+        if: always()
+        uses: invisirisk/pse-action@latest
+        with:
+          cleanup: "true"
+
+  gather_analytics:
+   runs-on: ubuntu-latest
+   name: Gather Analytics
+   needs: java-application-build
+   if: always()
+   steps:
+   - name: Gather Status
+     uses: invisirisk/pse-action@latest
+     with:
+      api_url: "https://app.invisirisk.com"
+      app_token: ${{ secrets.IR_API_KEY_L_PROD }}
+      send_job_status: "true"
