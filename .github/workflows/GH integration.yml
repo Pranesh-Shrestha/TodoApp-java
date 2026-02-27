@@ -13,6 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     name: Run build
     steps:
+      # ============= InvisiRisk Setup =============
+      - name: Setup PSE
+        uses: invisirisk/pse-action@latest
+        with:
+          app_token: ${{secrets.IR_API_KEY}}
+      # ============= InvisiRisk Setup End =============
       - uses: actions/checkout@v4
 
       - name: Set up Java
@@ -25,3 +31,10 @@ jobs:
         run: |
           mvn dependency:go-offline \
           -DexcludeTransitive=true
+      # ============= InvisiRisk Cleanup =============
+      - name: Cleanup PSE
+        if: always()
+        uses: invisirisk/pse-action@latest
+        with:
+          cleanup: "true"
+      # ============= InvisiRisk Cleanup End =============
