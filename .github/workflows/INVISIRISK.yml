@@ -1,4 +1,4 @@
-name: Java Project
+name: Java Project x IR
 
 on:
   workflow_dispatch:
