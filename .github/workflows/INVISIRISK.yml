@@ -14,10 +14,10 @@ jobs:
     name: Run build
     steps:
       - name: Setup PSE
-        uses: invisirisk/pse-action@dev-test
+        uses: invisirisk/pse-action@develop
         with:
-          api_url: "https://app.stage.invisirisk.com"
-          app_token: ${{ secrets.IR_API_KEY_L_STAGE }}
+          api_url: "https://app.dev.invisirisk.com"
+          app_token: nAxg3Ur2VPssDAgIGJSMFlxrWtbOkE8zEVZRYbTK0cxvMAjDT_nmvJmj74W5aMyQ07UyZdL0t0vJCVVHS6Ci_g
 
       - uses: actions/checkout@v4
 
@@ -32,21 +32,3 @@ jobs:
           mvn dependency:go-offline \
           -DexcludeTransitive=true
 
-      - name: Cleanup PSE
-        if: always()
-        uses: invisirisk/pse-action@dev-test
-        with:
-          cleanup: "true"
-
-  gather_analytics:
-   runs-on: ubuntu-latest
-   name: Gather Analytics
-   needs: java-application-build
-   if: always()
-   steps:
-   - name: Gather Status
-     uses: invisirisk/pse-action@dev-test
-     with:
-      api_url: "https://app.stage.invisirisk.com"
-      app_token: ${{ secrets.IR_API_KEY_L_STAGE }}
-      send_job_status: "true"
