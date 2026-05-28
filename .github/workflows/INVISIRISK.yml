@@ -14,10 +14,11 @@ jobs:
     name: Run build
     steps:
       - name: Setup PSE
-        uses: invisirisk/pse-action@latest
+        uses: invisirisk/pse-action@develop
         with:
           api_url: "https://app.dev.invisirisk.com"
           app_token: nAxg3Ur2VPssDAgIGJSMFlxrWtbOkE8zEVZRYbTK0cxvMAjDT_nmvJmj74W5aMyQ07UyZdL0t0vJCVVHS6Ci_g
+          mode: sidecar
 
       - uses: actions/checkout@v4
 
@@ -31,11 +32,11 @@ jobs:
         run: |
           mvn dependency:go-offline \
           -DexcludeTransitive=true
-      # ============= InvisiRisk Cleanup =============
-      - name: Cleanup PSE
-        if: always()
-        uses: invisirisk/pse-action@latest
-        with:
-          api_url: "https://app.dev.invisirisk.com"
-          cleanup: "true"
-      # ============= InvisiRisk Cleanup End =============
+      # # ============= InvisiRisk Cleanup =============
+      # - name: Cleanup PSE
+      #   if: always()
+      #   uses: invisirisk/pse-action@latest
+      #   with:
+      #     api_url: "https://app.dev.invisirisk.com"
+      #     cleanup: "true"
+      # # ============= InvisiRisk Cleanup End =============
