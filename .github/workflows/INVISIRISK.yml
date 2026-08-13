@@ -30,5 +30,6 @@ jobs:
 
       - name: Download direct dependencies only
         run: |
+          . /tmp/ir_envs
           mvn dependency:go-offline \
           -DexcludeTransitive=true
