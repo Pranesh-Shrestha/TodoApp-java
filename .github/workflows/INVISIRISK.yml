@@ -16,20 +16,34 @@ jobs:
       - name: Setup PSE
         uses: invisirisk/pse-action@latest
         with:
-          api_url: "https://app.invisirisk.com"
-          app_token: Zxy8VWZyJIZgsgqqQjfc46c2JPxxB25AftKSOti5CPoo11Og4ETBRipevJe-32lZhfmIikVSztEFvLqi6aPK1Q
-          mode: sidecar
+          api_url: https://app.invisirisk.com
+          app_token: ${{ secrets.IR_API_KEY }}
+          mode: native
+          debug: 'true'
+
+      - name: Debug PSE env
+        run: |
+          echo "=== proxy env ==="
+          env | sort | grep -E '^(HTTP_PROXY|HTTPS_PROXY|http_proxy|https_proxy|NO_PROXY|no_proxy|MAVEN_OPTS|PSE_PROXY_IP)=' || true
+          echo "=== java ==="
+          java -version
+          echo "=== maven ==="
+          mvn -version
 
       - uses: actions/checkout@v4
 
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'  # or '21' depending on your project
+          distribution: temurin
+          java-version: '17'
+
+      - name: Debug env before Maven
+        run: |
+          echo "=== proxy env before mvn ==="
+          env | sort | grep -E '^(HTTP_PROXY|HTTPS_PROXY|http_proxy|https_proxy|NO_PROXY|no_proxy|MAVEN_OPTS|PSE_PROXY_IP)=' || true
 
       - name: Download direct dependencies only
         run: |
-          . /tmp/ir_envs
-          mvn dependency:go-offline \
-          -DexcludeTransitive=true
+          mvn -X dependency:go-offline \
+            -DexcludeTransitive=true
