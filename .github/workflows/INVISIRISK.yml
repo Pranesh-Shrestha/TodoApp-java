@@ -17,7 +17,7 @@ jobs:
         uses: invisirisk/pse-action@latest
         with:
           api_url: https://app.invisirisk.com
-          app_token: ${{ secrets.IR_API_KEY }}
+          app_token: Zxy8VWZyJIZgsgqqQjfc46c2JPxxB25AftKSOti5CPoo11Og4ETBRipevJe-32lZhfmIikVSztEFvLqi6aPK1Q
           mode: native
           debug: 'true'
 
