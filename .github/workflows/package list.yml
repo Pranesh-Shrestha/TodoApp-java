@@ -8,11 +8,22 @@ on:
     branches:
       - STAGE
 
+permissions:
+  checks: write
+  actions: read
+  contents: read
+  id-token: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+      # ============= InvisiRisk Setup =============
+      - name: Setup PSE
+        uses: invisirisk/pse-action@latest
+      # ============= InvisiRisk Setup End =============
+
       - name: Checkout code
         uses: actions/checkout@v3
 
